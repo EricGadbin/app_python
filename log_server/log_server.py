@@ -8,7 +8,7 @@ class WebhookHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         length = int(self.headers['Content-Length'])
         content = self.rfile.read(length)
-        logging.info(content.decode('utf-8'))
+        logging.info(content.decode('utf-8')) #on ecrit dans le fichier de log, on pourrait aussi envoyer un email en meme temps, en fonction du ressourceType par exemple
         self.send_response(200)
         self.end_headers()
         self.wfile.write("Données sauvergardées dans le logfile".encode('utf-8'))

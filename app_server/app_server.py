@@ -32,7 +32,7 @@ class WebhookHandler(BaseHTTPRequestHandler): #Override de la classe handler du 
             if response.status != 200:
                 print(f"Le serveur {host} à repondu avec une erreur: {response.status}")
             else: 
-                print("données envoyées au serveur: {host}...")
+                print(f"données envoyées au serveur: {host}...")
         except Exception as e:
                 print(f"Connexion au serveur {host} impossible: {str(e)}")
         finally:

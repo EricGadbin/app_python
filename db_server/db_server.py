@@ -10,29 +10,49 @@ class WebhookHandler(BaseHTTPRequestHandler):
         length = int(self.headers['Content-Length'])
         content = self.rfile.read(length)
         data = json.loads(content.decode('utf-8'))
-        try:
-            validated_data = self.validate_data(data)
-            self.insert_data(validated_data)
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write("Données mises dans la DB\n".encode("utf-8"))
-        except ValueError as e:
+
+        is_valid = self.validate_data(data)
+        if not is_valid:
             self.send_response(400)
             self.end_headers()
-            self.wfile.write(str(e).encode("utf-8"))
+            self.wfile.write("le format des données est invalide".encode("utf-8"))
+        else:
+            self.insert_data(data)
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write("Données mises dans la DB\n".encode("utf-8"))           
 
-    def validate_data(self, data):  #verification des fields required et de leurs type
-        try:
-            data['resourceId'] = int(data['resourceId'])
-        except ValueError:
-            raise ValueError("resourceId n'est pas un int")
-        try:
-            data['triggeredAt'] = datetime.strptime(data['triggeredAt'], "%Y-%m-%dT%H:%M:%SZ")
-        except ValueError:
-            raise ValueError("triggeredAt doit etre au format YYYY-MM-DDTHH:MM:SSZ")
-        if not re.match("^server-[0-9]{1,100}$", data['triggeredBy']):
-            raise ValueError("triggeredBy ne respecte pas le pattern donné")
-        return data
+    def validate_data(self, data):
+        requirements = { # Types des champs
+            "resourceType": str,
+            "resourceId": int,
+            "eventType": str,
+            "triggeredAt": "datetime",
+            "triggeredBy": "pattern"
+        }
+        for field, expected_type in requirements.items(): # On verifie si le champ existe et son type
+            #si le champ existe
+            if field not in data:
+                return False
+            
+            #son type
+            if expected_type == str and not isinstance(data[field], str):
+                return False
+            elif expected_type == int and not isinstance(data[field], int):
+                return False
+            elif expected_type == "datetime":
+                try:
+                    datetime.strptime(data['triggeredAt'], "%Y-%m-%dT%H:%M:%SZ")
+                except ValueError:
+                    return False
+            elif expected_type == "pattern":
+                if not re.match("^server-[0-9]{1,100}$", data['triggeredBy']):
+                    return False
+
+        # et a la fin, verification de si eventType est une des valeurs autorisées
+        if data["eventType"] not in ["resourceHasBeenCreated", "resourceHasBeenUpdated", "resourceHasBeenDeleted"]:
+            return False
+        return True
 
     def insert_data(self, data): #On insere les datas, optimalement, il faudrait verifier si la ressource existe déja pour l'update a la place d'en créer une nouvelle
         connection = sqlite3.connect("/db_server/db/events.db")

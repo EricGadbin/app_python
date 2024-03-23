@@ -20,4 +20,7 @@ curl -X POST http://localhost:8000/event -H "Content-Type: application/json" -d 
 }'
 ```
 
-on peut maintenant verifier dans la DB ou le fichier de log pour voir que les données ont bien été traitrés
+On peut maintenant verifier dans la DB ou le fichier de log pour voir que les données ont bien été traitrés.
+On peut aussi regarder les dockers dans dockerdesktop pour voir les erreurs specifiques et status de retours.
+
+J'ai choisis de faire la vérification d'erreur du coté db_server car on pourrait supposer qu'avoir les logs des données envoyées mais mal formattées puisse etre interressant.
