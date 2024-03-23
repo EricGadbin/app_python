@@ -1,0 +1,7 @@
+2024-03-23 12:35:41,232 - {
+  "resourceType": "pneu",
+  "resourceId": 1,
+  "eventType": "resourceHasBeenCreated",
+  "triggeredAt": "2024-03-21T10:00:00Z",
+  "triggeredBy": "server-42"
+}

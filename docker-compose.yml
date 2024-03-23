@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+  app: #Serveur princpal
+    env_file: .env
+    build:
+      context: "app_server/"
+    volumes:
+      - .:/app_server
+    ports:
+      - "8000:8000"
+
+  log_server: #Serveur de logs et email
+    build:
+      context: "log_server/"
+    volumes:
+      - ./log_server/:/app/
+    ports:
+      - "8001:8001"
+
+  db_server: #Serveur qui enregistre en db
+    build: 
+      context: "db_server/"
+    volumes:
+      - ./db/:/db_server/db/
+    ports:
+      - "8002:8002" 
+    depends_on:
+      - db
+  db:
+    image: nouchka/sqlite3:latest
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./db/:/root/db/
+    ports:
+      - "5432:5432"
+    restart: always
