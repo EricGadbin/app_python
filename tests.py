@@ -9,7 +9,7 @@ class TestValidateData(unittest.TestCase):
         # Données correctes
         data = {
             "resourceType": "customer",
-            "resourceId": 123,
+            "resourceId": 1,
             "eventType": "resourceHasBeenCreated",
             "triggeredAt": "2024-03-21T10:00:00Z",
             "triggeredBy": "server-1"
@@ -19,7 +19,7 @@ class TestValidateData(unittest.TestCase):
     def test_validate_data_missing_field(self):
         data = {
             "resourceType": "customer",
-            "resourceId": 123,
+            "resourceId": 1,
             # eventType n'est pas la
             "triggeredAt": "2024-03-21T10:00:00Z",
             "triggeredBy": "server-1"
@@ -39,7 +39,7 @@ class TestValidateData(unittest.TestCase):
     def test_validate_data_incorrect_date_format(self):
         data = {
             "resourceType": "customer",
-            "resourceId": 123,
+            "resourceId": 1,
             "eventType": "resourceHasBeenCreated",
             "triggeredAt": "ceci n'est pas une date", # Format de date incorrect
             "triggeredBy": "server-1"
@@ -49,7 +49,7 @@ class TestValidateData(unittest.TestCase):
     def test_validate_data_incorrect_pattern(self):
         data = {
             "resourceType": "customer",
-            "resourceId": 123,
+            "resourceId": 1,
             "eventType": "resourceHasBeenCreated",
             "triggeredAt": "2024-03-21T10:00:00Z",
             "triggeredBy": "ne respecte pas le patttern" # Pattern incorrect pour triggeredBy
