@@ -22,8 +22,9 @@ class WebhookHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write("Données mises dans la DB\n".encode("utf-8"))           
 
-    def validate_data(self, data):
-        requirements = { # Types des champs
+    @staticmethod #Je met cette fonction en static car je n'ai pas besoin de self ici, et surtout c'est plus pratique pour les tests unitaires
+    def validate_data(data):
+        requirements = { # Types des champs des données reçues
             "resourceType": str,
             "resourceId": int,
             "eventType": str,

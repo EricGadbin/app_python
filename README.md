@@ -15,9 +15,15 @@ curl -X POST http://localhost:8000/event -H "Content-Type: application/json" -d 
   "resourceType": "pneu",
   "resourceId": 1,
   "eventType": "resourceHasBeenCreated",
-  "triggeredAt": "2024-03-21T10:00:00Z",
-  "triggeredBy": "server-42"
+  "triggeredAt": "2024-03-23T10:30:00Z",
+  "triggeredBy": "server-1"
 }'
+```
+
+Pour lancer les tests
+
+```bash
+python -m unittest tests.py #utiliser 'python3' si 'python' n'existe pas
 ```
 
 On peut maintenant verifier dans la DB ou le fichier de log pour voir que les données ont bien été traitrés.

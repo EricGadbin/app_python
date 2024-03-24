@@ -8,12 +8,12 @@ class WebhookHandler(BaseHTTPRequestHandler): #Override de la classe handler du 
         self.send_response(300)
         self.send_header('Content-type', 'application/json')
         self.end_headers()
-        self.wfile.write("Vous n'êtes pas autorisé a utiliser GET sur ce serveur \n".encode('utf-8'))
+        self.wfile.write("Vous n'êtes pas autorisé à utiliser GET sur ce serveur \n".encode('utf-8'))
 
     def do_POST(self):
-        if (self.path == "/event"): #On envoie les données aux serveurs seulement sur la route "/eventx"
+        if (self.path == "/event"): #On envoie les données aux serveurs seulement sur la route "/event"
             if self.headers['Content-Type'] != "application/json" : 
-                self.wfile.write("Mauvais format de donnees, je ne peux lire que du JSON\n".encode('utf-8'))
+                self.wfile.write("Mauvais format de données, je ne peux lire que du JSON\n".encode('utf-8'))
                 return
             length = int(self.headers['Content-Length'])
             content = self.rfile.read(length)
