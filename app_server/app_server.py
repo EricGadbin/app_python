@@ -43,5 +43,5 @@ def run(server_class=HTTPServer, handler_class=WebhookHandler): #Méthode pour r
     httpd = server_class(server_address, handler_class)
     httpd.serve_forever()
 
-if __name__ == "__main__": #Main
+if __name__ == "__main__":
     run()
